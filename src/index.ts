@@ -18,8 +18,9 @@ async function getAll(api: JoplinData, path: Path, query: any): Promise<any[]> {
 
 const autoTagUpdate = async (noteId: string, forceUpdate: boolean) => {
   const note = await joplin.data.get(['notes', noteId], {fields: ['id', 'title', 'body']});
-	const noteText = note.title + "\n" + note.body
-	const tags1 = [... noteText.matchAll(/\s#(\w+)/g)]
+  const noteText = note.title + "\n" + note.body
+  // Allow @ symbol for people mentions
+  const tags1 = [... noteText.matchAll(/\s#([\w+@])/g)]
   console.debug("Tags1", tags1)
   // Extract group match
   const tags = tags1.map((e) => e[1].toLowerCase())
@@ -65,8 +66,8 @@ const debouncedTagUpdate = debounce((id: string) => autoTagUpdate(id, false), 50
 
 // TODO: setup a force overwrite to make tags match what's in the doc
 joplin.plugins.register({
-	onStart: async function() {
-		await joplin.commands.register({
+  onStart: async function() {
+    await joplin.commands.register({
       name: "autoTagUpdate",
       label: "Update auto tags ie parse note title and body for tags",
       execute: async (_noteIds: string[]) => {
@@ -75,8 +76,8 @@ joplin.plugins.register({
       },
     });
 
-		joplin.workspace.onNoteChange(async (event: any) => {
-			enum ItemChangeEventType {
+    joplin.workspace.onNoteChange(async (event: any) => {
+      enum ItemChangeEventType {
         Create = 1,
         Update = 2,
         Delete = 3,
@@ -87,5 +88,5 @@ joplin.plugins.register({
       // Wait until DELAY since last time event was sent to improve odds that full content is in TITLE
       await debouncedTagUpdate(event.id)
     });
-	},
+  },
 });
