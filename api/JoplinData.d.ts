@@ -1,5 +1,5 @@
-import { ModelType } from '../../../BaseModel';
-import { Path } from './types';
+import { ModelType } from "../../../BaseModel";
+import { Path } from "./types";
 /**
  * This module provides access to the Joplin data API: https://joplinapp.org/api/references/rest_api/
  * This is the main way to retrieve data, such as notes, notebooks, tags, etc.
@@ -37,14 +37,14 @@ import { Path } from './types';
  * ```
  */
 export default class JoplinData {
-    private api_;
-    private pathSegmentRegex_;
-    private serializeApiBody;
-    private pathToString;
-    get(path: Path, query?: any): Promise<any>;
-    post(path: Path, query?: any, body?: any, files?: any[]): Promise<any>;
-    put(path: Path, query?: any, body?: any, files?: any[]): Promise<any>;
-    delete(path: Path, query?: any): Promise<any>;
-    itemType(itemId: string): Promise<ModelType>;
-    resourcePath(resourceId: string): Promise<string>;
+  private api_;
+  private pathSegmentRegex_;
+  private serializeApiBody;
+  private pathToString;
+  get(path: Path, query?: any): Promise<any>;
+  post(path: Path, query?: any, body?: any, files?: any[]): Promise<any>;
+  put(path: Path, query?: any, body?: any, files?: any[]): Promise<any>;
+  delete(path: Path, query?: any): Promise<any>;
+  itemType(itemId: string): Promise<ModelType>;
+  resourcePath(resourceId: string): Promise<string>;
 }
